@@ -1,0 +1,60 @@
+python : Traceback 
+(most recent call 
+last):
+At line:1 char:31
++ .\.venv\Scripts\Act
+ivate.ps1; python 
+run.py 2> 
+error_log.txt
++                    
+           ~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (Traceba   
+ ck (most recent     
+call last)::Stri    
+ng) [], RemoteEx    
+ception
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+  File "D:\Vishal_VSc
+ode\Vishal Python\Hot
+el_Guest_Analyzer_NLP
+-Sentiment-Analysis--
+main\run.py", line 
+8, in <module>
+    app = 
+create_app()
+  File "D:\Vishal_VSc
+ode\Vishal Python\Hot
+el_Guest_Analyzer_NLP
+-Sentiment-Analysis--
+main\app\__init__.py"
+, line 41, in 
+create_app
+    from app.routes 
+import bp as 
+routes_bp
+  File "D:\Vishal_VSc
+ode\Vishal Python\Hot
+el_Guest_Analyzer_NLP
+-Sentiment-Analysis--
+main\app\routes.py", 
+line 10, in <module>
+    from app.sentimen
+t_analyzer import ana
+lyze_review_vader, 
+predict_sentiment_ml
+ImportError: cannot 
+import name 'analyze_
+review_vader' from 'a
+pp.sentiment_analyzer
+' (D:\Vishal_VScode\V
+ishal Python\Hotel_Gu
+est_Analyzer_NLP-Sent
+iment-Analysis--main\
+app\sentiment_analyze
+r.py)
