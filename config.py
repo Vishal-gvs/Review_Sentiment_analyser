@@ -9,15 +9,33 @@ basedir = Path(__file__).parent.absolute()
 instance_path = basedir / 'instance'
 instance_path.mkdir(exist_ok=True)
 
+
+def normalize_db_url(url: str) -> str:
+    """
+    Render PostgreSQL URLs sometimes start with 'postgres://'
+    but SQLAlchemy requires 'postgresql://'
+    """
+    if url and url.startswith("postgres://"):
+        return url.replace("postgres://", "postgresql://", 1)
+    return url
+
+
 class Config:
     """Base configuration"""
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production'
-    # Use absolute path to avoid issues with spaces in path
+
+    # Secret key
+    SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
+
+    # Local SQLite path (fallback)
     database_path = instance_path / 'database.db'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or f'sqlite:///{database_path}'
+    sqlite_uri = f"sqlite:///{database_path}"
+
+    # Cloud database handling
+    raw_db_url = os.environ.get('DATABASE_URL')
+    SQLALCHEMY_DATABASE_URI = normalize_db_url(raw_db_url) if raw_db_url else sqlite_uri
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    
-    # NEW: Path for the trained Machine Learning model
-    ML_MODEL_PATH = basedir / 'instance' / 'sentiment_classifier.pkl' 
-    # NEW: Path for the trained feature vectorizer (TF-IDF)
-    TFIDF_VECTORIZER_PATH = basedir / 'instance' / 'tfidf_vectorizer.pkl'
+
+    # Paths for ML model + vectorizer
+    ML_MODEL_PATH = instance_path / 'sentiment_classifier.pkl'
+    TFIDF_VECTORIZER_PATH = instance_path / 'tfidf_vectorizer.pkl'
