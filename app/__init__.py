@@ -5,6 +5,7 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from sqlalchemy.exc import SQLAlchemyError
 from config import Config
 
 # Initialize extensions
@@ -48,13 +49,15 @@ def create_app(config_class=Config):
     from app.routes import bp as routes_bp
     app.register_blueprint(routes_bp)
 
-    # -------------------------------
-    # AUTO-CREATE DATABASE TABLES
-    # (Required because free Render plan
-    #  does NOT allow Shell or migrations)
-    # -------------------------------
-    with app.app_context():
-        db.create_all()
-        print("✓ Database tables ensured (Render-friendly auto-create).")
+    if app.config.get('AUTO_CREATE_DB', True):
+        with app.app_context():
+            try:
+                db.create_all()
+                app.logger.info("Database tables ensured.")
+            except SQLAlchemyError as exc:
+                app.logger.warning(
+                    "Database unavailable during startup; continuing without auto-create: %s",
+                    exc,
+                )
 
     return app

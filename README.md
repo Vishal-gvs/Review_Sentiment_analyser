@@ -159,14 +159,18 @@ http://localhost:5000
 
 🚀 Deployment (Render)
 Required environment variables:
-DATABASE_URL=<your render postgres url>
+DATABASE_URL=<your render postgres internal/external URL>
 SECRET_KEY=<your secret>
+
+Optional environment variables:
+AUTO_CREATE_DB=true   # set false to skip startup db.create_all()
 
 Render Start Command:
 gunicorn -w 4 -b 0.0.0.0:$PORT run:app
 
 
-✔ Auto-creates tables on startup
+✔ Starts even if database is temporarily unreachable
+✔ Auto-creates tables on startup (when AUTO_CREATE_DB=true)
 ✔ Works without Render Shell
 ✔ Fully cloud-ready
 
