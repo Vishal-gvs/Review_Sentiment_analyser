@@ -36,6 +36,10 @@ class Config:
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    # Control whether schema creation runs during app startup.
+    # Keep this enabled by default for local SQLite usage.
+    AUTO_CREATE_DB = os.environ.get('AUTO_CREATE_DB', 'true').lower() == 'true'
+
     # Paths for ML model + vectorizer
     ML_MODEL_PATH = instance_path / 'sentiment_classifier.pkl'
     TFIDF_VECTORIZER_PATH = instance_path / 'tfidf_vectorizer.pkl'
